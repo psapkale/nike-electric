@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectTotalQuantity, setOpenCart } from '../app/CartSlice.js';
 import {
    MagnifyingGlassIcon,
    HeartIcon,
@@ -8,6 +10,17 @@ import logo from '../assets/logo.png';
 
 const Navbar = () => {
    const [navTrigger, setNavTrigger] = useState(false);
+
+   const dispatch = useDispatch();
+   const totalQuantity = useSelector(selectTotalQuantity);
+
+   const handleCartToggle = () => {
+      dispatch(
+         setOpenCart({
+            cartState: true,
+         })
+      );
+   };
 
    const onScrollNavBehaviour = () => {
       if (window.scrollY > 30) {
@@ -66,6 +79,7 @@ const Navbar = () => {
                   <li className='grid items-center'>
                      <button
                         type='button'
+                        onClick={handleCartToggle}
                         className='border-none outline-none active:scale-110 transition-all duration-300 relative'
                      >
                         <ShoppingBagIcon
@@ -81,7 +95,7 @@ const Navbar = () => {
                                  : 'bg-slate-100 text-slate-900 shadow-slate-100'
                            }`}
                         >
-                           0
+                           {totalQuantity}
                         </div>
                      </button>
                   </li>

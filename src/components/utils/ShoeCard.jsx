@@ -1,5 +1,7 @@
-import { ShoppingBagIcon, StarIcon } from '@heroicons/react/24/solid';
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { setATC, setOpenCart } from '../../app/CartSlice';
+import { ShoppingBagIcon, StarIcon } from '@heroicons/react/24/solid';
 
 const ShoeCard = ({
    // Objects inside 'item'
@@ -14,6 +16,22 @@ const ShoeCard = ({
    rating,
    price,
 }) => {
+   const dispatch = useDispatch();
+
+   const handleCartToggle = () => {
+      dispatch(
+         setOpenCart({
+            cartState: true,
+         })
+      );
+   };
+
+   const onATC = () => {
+      const item = { id, title, text, img, color, shadow, price };
+
+      dispatch(setATC(item));
+   };
+
    return (
       <>
          {/* Parent div */}
@@ -51,16 +69,21 @@ const ShoeCard = ({
                      </h1>
                   </div>
                </div>
-               {/* Bag and buy button */}
+               {/* ATC and buy button */}
                <div className='flex items-center gap-3'>
                   <button
                      type='button'
+                     onClick={() => onATC()}
                      className='bg-white opacity-90 blur-effect-theme button-theme p-0.5 shadow shadow-slate-200'
                   >
                      <ShoppingBagIcon className='icon-style text-slate-900' />
                   </button>
                   <button
                      type='button'
+                     onClick={() => {
+                        onATC();
+                        handleCartToggle();
+                     }}
                      className='bg-white opacity-90 blur-effect-theme button-theme px-2 py-1 shadow shadow-slate-200 text-sm text-black'
                   >
                      {btn}
